@@ -17,7 +17,7 @@ namespace ContactBook.Controllers
         // GET: Contacts
         public ActionResult Index()
         {
-            return View(db.Contacts.ToList());
+            return View(db.Contacts.OrderBy(contact => contact.Name).ToList());
         }
 
         // GET: Contacts/Details/5
@@ -46,7 +46,7 @@ namespace ContactBook.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Surname,CellNumber,Email,Address")] Contact contact)
+        public ActionResult Create([Bind(Include = "Id,Name,CellNumber")] Contact contact)
         {
             if (ModelState.IsValid)
             {

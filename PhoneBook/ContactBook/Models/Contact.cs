@@ -9,6 +9,7 @@ namespace ContactBook.Models
     public partial class Contact
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         public int Id { get; set; }
 
         [Required]
