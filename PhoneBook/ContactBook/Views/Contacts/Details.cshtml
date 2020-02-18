@@ -11,19 +11,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.FirstName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.FirstName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Surname)
+            @Html.DisplayNameFor(model => model.LastName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Surname)
+            @Html.DisplayFor(model => model.LastName)
         </dd>
 
         <dt>
@@ -50,9 +50,27 @@
             @Html.DisplayFor(model => model.Address)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.UserID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserID)
+        </dd>
+
     </dl>
+
+</div>
+<div align="right">
+    @if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+        }
+    }
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ContactID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

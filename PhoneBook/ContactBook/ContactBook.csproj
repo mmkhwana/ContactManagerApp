@@ -155,8 +155,7 @@
     </Compile>
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Extended\User.cs" />
-    <Compile Include="Models\Model1.cs" />
-    <Compile Include="Models\ResetPassworsModel.cs" />
+    <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>UserModel.tt</DependentUpon>
     </Compile>
@@ -195,14 +194,12 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Views\User\VerifyAccount.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Contacts\Create.cshtml" />
     <Content Include="Views\Contacts\Delete.cshtml" />
     <Content Include="Views\Contacts\Details.cshtml" />
     <Content Include="Views\Contacts\Edit.cshtml" />
     <Content Include="Views\Contacts\Index.cshtml" />
-    <Content Include="Views\User\FogertPassword.cshtml" />
-    <Content Include="Views\User\ResetPassword.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
