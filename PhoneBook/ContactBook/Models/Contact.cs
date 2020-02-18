@@ -1,3 +1,5 @@
+using System.Configuration;
+
 namespace ContactBook.Models
 {
     using System;
@@ -8,24 +10,25 @@ namespace ContactBook.Models
 
     public partial class Contact
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Key]
-        public int Id { get; set; }
+        public int ContactID { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
         [StringLength(50)]
-        public string Surname { get; set; }
+        public string LastName { get; set; }
 
-        [StringLength(50)]
+        [StringLength(10)]
         public string CellNumber { get; set; }
 
-        [StringLength(50)]
+        [StringLength(254)]
         public string Email { get; set; }
 
-        [StringLength(50)]
+        [EmailAddress]
+        [StringLength(254)]
         public string Address { get; set; }
+
+        public int? UserID { get; set; }
     }
 }
