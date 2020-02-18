@@ -12,12 +12,12 @@ namespace ContactBook.Controllers
 {
     public class ContactsController : Controller
     {
-        private Model1 db = new Model1();
+        private ContactModel db = new ContactModel();
 
         // GET: Contacts
         public ActionResult Index()
         {
-            return View(db.Contacts.OrderBy(contact => contact.Name).ToList());
+            return View(db.Contacts.ToList());
         }
 
         // GET: Contacts/Details/5
@@ -44,9 +44,10 @@ namespace ContactBook.Controllers
         // POST: Contacts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,CellNumber")] Contact contact)
+        public ActionResult Create([Bind(Include = "ContactID,FirstName,LastName,CellNumber,Email,Address,UserID")] Contact contact)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +79,7 @@ namespace ContactBook.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Surname,CellNumber,Email,Address")] Contact contact)
+        public ActionResult Edit([Bind(Include = "ContactID,FirstName,LastName,CellNumber,Email,Address,UserID")] Contact contact)
         {
             if (ModelState.IsValid)
             {

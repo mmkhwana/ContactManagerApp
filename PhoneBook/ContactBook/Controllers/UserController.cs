@@ -12,7 +12,6 @@ namespace ContactBook.Controllers
 {
     public class UserController : Controller
     {
-       
         //Registration Action 
         [HttpGet]
         public ActionResult Registration()
@@ -184,30 +183,18 @@ namespace ContactBook.Controllers
 
         #region send verification email
         [NonAction]
-        public void SendVerificationLinkEmail(string emailID, string activationCode, string emailfor = "VerifyAccount")
+        public void SendVerificationLinkEmail(string emailID, string activationCode)
         {
-            var verifyUrl = "/User/"+emailfor+"/" + activationCode;
+            var verifyUrl = "/User/VerifyAccount/" + activationCode;
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
 
             var fromEmail = new MailAddress("ml.modisadife@gmail.com", "Contact Book Account");
             var toEmail = new MailAddress(emailID);
             var fromEmailPassword = "1792fd2749bb31";
+            string subject = "Your account is successfully created! Please Confirm.";
 
-            string subject = "";
-            string body = "";
-            if (emailfor == "VerifyAccount")
-            {
-                subject = "Your account is successfully created! Please Confirm.";
-
-                body = "<br/><br/>We are excited to tell you that you may now use your Contact Book. Please click on the below link to verify your email and start saving contacts" +
-                   " <br/><br/><a href='" + link + "'>" + link + "</a> ";
-            }
-            else 
-            {
-                subject = "Reset Password";
-                body = "Hi,<br/><br>We got a request for reset your account password.Please Click link below to reset"+
-                    "<br/><br><a href="+link+">Reset Password Link</a>";
-            }
+            string body = "<br/><br/>We are excited to tell you that you may now use your Contact Book. Please click on the below link to verify your email and start saving contacts" +
+                " <br/><br/><a href='" + link + "'>" + link + "</a> ";
 
             var smtp = new SmtpClient
             {
@@ -228,99 +215,5 @@ namespace ContactBook.Controllers
                 smtp.Send(message);
         }
         #endregion
-
-        #region Forget Password
-
-        public ActionResult FogertPassword()
-        {
-            return View(); 
-        }
-
-        [HttpPost]
-        public ActionResult FogertPassword(string EmailID)
-        {
-            //verify email
-            Console.WriteLine(EmailID);
-            string message = "";
-            bool status = false;
-
-            using (UserDBEntities dataconnect = new UserDBEntities())
-            {
-                var account = dataconnect.Users.Where(value => value.Email == EmailID).FirstOrDefault();
-                if (account != null)
-                {
-                    //Send email for reset password
-                    string resetCode = Guid.NewGuid().ToString();
-                    SendVerificationLinkEmail(account.Email,resetCode, "ResetPassword");
-                    account.ResetPassword = resetCode;
-                    //
-                    dataconnect.Configuration.ValidateOnSaveEnabled = status;
-                    dataconnect.SaveChanges();
-                    message = "Reset Password link has been sent to your email id.";
-
-                }
-                else
-                {
-                    message = "Account Not Found";
-                }
-            }
-            ViewBag.Message = message;
-            return View();
-        }
-        #endregion
-
-        #region GeneratePassword
-
-        public ActionResult ResetPassword(string id)
-        {
-            using (UserDBEntities data = new UserDBEntities())
-            {
-                var user = data.Users.Where(value => value.ResetPassword == id).FirstOrDefault();
-                if (user != null) 
-                {
-                    ResetPassworsModel model = new ResetPassworsModel();
-                    model.ResetCode = id;
-                    return View(model);
-                }
-                else 
-                {
-                    return HttpNotFound();
-                }
-            }
-        }
-
-        #endregion
-
-        #region
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(ResetPassworsModel model)
-        {
-            var message = "";
-
-            if (ModelState.IsValid)
-            {
-                using (UserDBEntities data = new UserDBEntities())
-                {
-                    var user = data.Users.Where(value => value.ResetPassword == model.ResetCode).FirstOrDefault();
-                    if (user != null)
-                    {
-                        user.Password = Crypto.Hash(model.NewPassword);
-                        user.ResetPassword = "";
-                        data.Configuration.ValidateOnSaveEnabled = false;
-                        data.SaveChanges();
-                        message = "New Password Updated successfully";
-                    }
-                }
-            }
-            else 
-            {
-                message = "Somthing Invalide";
-            }
-            ViewBag.Message = message;
-            return View(model);
-        }
-        #endregion
-
     }
 }
